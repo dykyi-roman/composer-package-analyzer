@@ -2,6 +2,8 @@
 
 namespace Dykyi\Application\Service\Infrastructure\ComposerLockParser;
 
+use Dykyi\Domain\Aggregate\PackagesCollection;
+use Dykyi\Domain\ValueObject\Package;
 use \RuntimeException;
 
 /**
@@ -31,7 +33,7 @@ class ComposerInfo
 
     public function parse()
     {
-        $this->checkFile();
+        $this->assertCheckFile();
         $this->decodedValue = json_decode(file_get_contents($this->pathToLockFile), true);
         if (json_last_error()) {
             throw new RuntimeException("Json parser error: " . $this->getJsonLastErrorMsg());
@@ -69,7 +71,7 @@ class ComposerInfo
         return $this->packages;
     }
 
-    private function checkFile()
+    private function assertCheckFile(): void
     {
         if (!file_exists($this->pathToLockFile)) {
             throw new RuntimeException("File {$this->pathToLockFile} not found or not readable");
@@ -87,6 +89,7 @@ class ComposerInfo
             JSON_ERROR_UTF8 => 'Malformed UTF-8 characters, possibly incorrectly encoded'
         );
         $error = json_last_error();
-        return array_key_exists($error, $errors) ? $errors[$error] : "Unknown error ({$error})";
+
+        return array_key_exists($error, $errors) ? $errors[$error] : sprintf('Unknown error (%s)', $error);
     }
 }

@@ -2,13 +2,11 @@
 
 namespace Dykyi\Infrastructure\Service;
 
-use Dykyi\Application\Service\ConfigInterface;
-
 /**
  * Class Config
  * @package Building\Infrastructure\Service
  */
-class Config implements ConfigInterface
+class Config
 {
     private $keys = [];
 

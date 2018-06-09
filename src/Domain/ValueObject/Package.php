@@ -1,6 +1,6 @@
 <?php
 
-namespace Dykyi\Application\Service\Infrastructure\ComposerLockParser;
+namespace Dykyi\Domain\ValueObject;
 
 use DateTime;
 

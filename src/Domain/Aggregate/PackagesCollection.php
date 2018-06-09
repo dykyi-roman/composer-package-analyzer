@@ -1,6 +1,8 @@
 <?php
 
-namespace Dykyi\Application\Service\Infrastructure\ComposerLockParser;
+namespace Dykyi\Domain\Aggregate;
+
+use Dykyi\Domain\ValueObject\Package;
 
 /**
  * Created by t4web/ComposerLockParser
@@ -21,7 +23,7 @@ class PackagesCollection extends \ArrayObject
     public function getByName($name)
     {
         if (!$this->hasByName($name)) {
-            throw new \UnexpectedValueException("Package $name not exists");
+            throw new \UnexpectedValueException(sprintf('Package %s not exists', $name));
         }
         return $this->getIndexedByName()[$name];
     }
@@ -33,7 +35,7 @@ class PackagesCollection extends \ArrayObject
     public function getByNamespace($namespace)
     {
         if (!$this->hasByNamespace($namespace)) {
-            throw new \UnexpectedValueException("Package $namespace not exists");
+            throw new \UnexpectedValueException(sprintf('Package %s not exists', $namespace));
         }
         return $this->getIndexedByNamespace()[$namespace];
     }

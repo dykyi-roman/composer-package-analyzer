@@ -3,9 +3,8 @@
 namespace Dykyi\Infrastructure\Application;
 
 use Dotenv\Dotenv;
-use Dykyi\Application\Service\ConfigInterface;
-use Dykyi\Domain\Command\Show;
-use Dykyi\Domain\Handler\ShowCommandHandler;
+use Dykyi\Domain\Command\Analyze;
+use Dykyi\Domain\Handler\AnalyzeCommandHandler;
 use Dykyi\Infrastructure\Service\Config;
 use Interop\Container\ContainerInterface;
 use Monolog\Handler\FirePHPHandler;
@@ -33,7 +32,7 @@ class Containers
     {
         return new ServiceManager([
             'factories' => [
-                ConfigInterface::class => function (): ConfigInterface {
+                Config::class => function (): Config{
                     $envConfig = (new Dotenv(__DIR__ . '/../../../'))->load();
                     return (new Config())->parse($envConfig);
                 },
@@ -44,7 +43,7 @@ class Containers
                     $bus->appendMiddleware(new FinishesHandlingMessageBeforeHandlingNext());
                     $commandHandlerMap = new CallableMap(
                         [
-                            Show::class => ShowCommandHandler::class,
+                            Analyze::class => AnalyzeCommandHandler::class,
                         ],
                         new ServiceLocatorAwareCallableResolver(function ($serviceId) {
                             $handler = new $serviceId();
